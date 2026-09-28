@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Diego Gym">
+<meta name="theme-color" content="#080808">
+<title>Diego · Gym Oct 2026</title>
+<style>
+:root{--bg:#080808;--s1:#111;--s2:#1a1a1a;--border:#2a2a2a;--acc:#d4f53c;--org:#f5823c;--blu:#3ca8f5;--pur:#a83cf5;--grn:#3cf5a8;--txt:#f2f2f2;--mut:#666;--r:12px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;padding:var(--st) 0 calc(var(--sb)+16px)}
+/* HEADER */
+.top{padding:20px 16px 12px;position:sticky;top:var(--st);background:rgba(8,8,8,.95);backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.top h1{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.top p{font-size:12px;color:var(--mut);margin-top:3px}
+/* WEEK TABS */
+.wtabs{display:flex;gap:6px;overflow-x:auto;padding:12px 16px 0;scrollbar-width:none}
+.wtabs::-webkit-scrollbar{display:none}
+.wtab{flex-shrink:0;padding:7px 14px;border-radius:20px;background:var(--s1);border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--mut);cursor:pointer;transition:all .15s}
+.wtab.on{background:var(--acc);border-color:var(--acc);color:#000}
+/* WEEK SECTION */
+.week{display:none;padding:12px 16px 0}
+.week.on{display:block}
+/* DAY CARD */
+.day{margin-bottom:14px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.day-head{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;background:var(--s1)}
+.day-left{}
+.day-date{font-size:13px;font-weight:700}
+.day-tri{font-size:11px;color:var(--mut);margin-top:2px}
+.day-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;flex-shrink:0;margin-left:8px}
+.b-hard{background:rgba(245,130,60,.15);color:var(--org)}
+.b-mod{background:rgba(212,245,60,.1);color:var(--acc)}
+.b-light{background:rgba(60,168,245,.1);color:var(--blu)}
+.b-mob{background:rgba(102,102,102,.15);color:var(--mut)}
+/* SECTION */
+.sec{padding:10px 14px;border-top:1px solid var(--border);background:var(--bg)}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--mut);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.hx-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;background:rgba(168,60,245,.15);color:var(--pur)}
+/* EXERCISE ROW */
+.ex{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ex:last-child{border-bottom:none}
+.ex-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.il{background:rgba(212,245,60,.08)}
+.iu{background:rgba(60,168,245,.08)}
+.ic{background:rgba(245,130,60,.08)}
+.ih{background:rgba(168,60,245,.1)}
+.im{background:rgba(102,102,102,.1)}
+.ex-info{flex:1}
+.ex-name{font-size:13px;font-weight:600;line-height:1.3}
+.ex-det{font-size:11px;color:var(--mut);margin-top:2px}
+.ex-sets{font-size:12px;font-weight:700;color:var(--acc);flex-shrink:0;font-family:monospace;white-space:nowrap}
+.ex-tip{font-size:11px;color:rgba(212,245,60,.6);margin-top:4px;line-height:1.4;display:none}
+.ex:active .ex-tip{display:block}
+/* HX INDICATOR */
+.ex.hx .ex-name::before{content:'⚡ ';font-size:11px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>💪 Diego · Gym Octubre</h1>
+  <p>Sep 28 – Nov 1 · Baja Crossing 14 Nov · Ironman Abr 2027</p>
+</div>
+
+<div class="wtabs" id="wtabs"></div>
+<div id="weeks"></div>
+
+<script>
+const W=[
+// ═══════════════════════════════════════════════
+// SEMANA 1: Sep 28 – Oct 4
+// ═══════════════════════════════════════════════
+{label:'Sep 28–Oct 4',days:[
+{date:'Lun Sep 28',tri:'Run · 6x2min difícil · 8.2km · 49 TSS',badge:'b-mod',badgeL:'💪 Mod',secs:[
+  {t:'🦵 Pierna + Running Baja',cls:'il',exs:[
+    {n:'Hip thrust con barra',d:'185–205 lbs',s:'4×12',tip:'El más importante para propulsión en subidas del Baja. Aprieta glúteo 1 seg arriba.',hx:false},
+    {n:'Sentadilla búlgara',d:'Mancuernas 35–44 lbs c/u',s:'4×10/lado',tip:'Fuerza unilateral para la zancada en cuesta. Rodilla trasera baja controlada.',hx:false},
+    {n:'Peso muerto rumano',d:'Barra 155–165 lbs',s:'3×10',tip:'Isquios para la propulsión. Cadera atrás, espalda recta.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · +22 lbs',s:'3×15',tip:'3 seg bajando. Protege fasciitis y tendón de Aquiles.',hx:false},
+  ]},
+  {t:'🏊 Natación',cls:'iu',exs:[
+    {n:'Lat pulldown agarre cerrado',d:'Máquina 120–145 lbs',s:'3×12',tip:'Tirón del crol. Codos apuntan al piso al final.',hx:false},
+    {n:'Hammer curl',d:'Mancuernas 33–40 lbs c/u',s:'3×12',tip:'Bíceps braquial para sostener la tracción en agua.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Rotadores externos del hombro. Rutina fija de natación.',hx:false},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Dead bug',d:'Piso · control',s:'3×10/lado',tip:'Espalda pegada al piso. Lento y controlado.',hx:false},
+    {n:'TRX plank con tuck',d:'TRX · pies en correas',s:'3×10 tucks',tip:'Cadera neutra al jalar rodillas. Sin arquear.',hx:false},
+  ]},
+]},
+{date:'Mar Sep 29',tri:'Rodillo cadencia · 10x(30s+60s) @75/55% · 46 TSS',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'🦵 Pierna Fuerte — Rodillo = pierna fuerte',cls:'il',exs:[
+    {n:'Sentadilla con barra',d:'Barra 175–220 lbs · 75-80%',s:'4×6',tip:'Rodillo no carga piernas — ideal para ir pesado. 1RM estimado ~265-285 lbs.',hx:false},
+    {n:'Peso muerto',d:'Barra 240–265 lbs',s:'4×5',tip:'Cadena posterior completa. 1RM ~330-350 lbs. Empuja el piso.',hx:false},
+    {n:'Leg press bilateral',d:'Máquina 285–330 lbs',s:'3×12',tip:'Complementa la sentadilla. Pies a la altura de hombros.',hx:false},
+    {n:'Hip thrust con barra',d:'Barra 200–220 lbs',s:'4×12',tip:'Glúteo máximo. Progresa 11 lbs por semana.',hx:false},
+    {n:'Hip abductor',d:'Máquina 88–121 lbs',s:'3×15',tip:'Estabilidad lateral en bici.',hx:false},
+  ]},
+  {t:'⚡ HYROX',cls:'ih',hyrox:true,exs:[
+    {n:'Farmer carry',d:'Mancuernas 70–88 lbs c/u · 100ft',s:'4×100ft',tip:'Objetivo: ~100% de tu peso corporal. Si hablas, sube el peso.',hx:true},
+    {n:'Sled push',d:'Sled + 88–132 lbs · 65ft',s:'3×65ft',tip:'Potencia de glúteos para el Baja. Inclinación adelante, pasos explosivos.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 25–33 lbs',s:'3×12/lado',tip:'Antirotación para posición aero.',hx:false},
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×30 seg',tip:'Posición aero en bici. Lumbar pegada al piso.',hx:false},
+  ]},
+]},
+{date:'Mié Sep 30',tri:'Run subidas · 4x8min puente · 9.8km · 59 TSS',badge:'b-mod',badgeL:'💪 Mod',secs:[
+  {t:'🏊 Upper + Natación — Run fuerte = upper',cls:'iu',exs:[
+    {n:'Pull-up / Lat pulldown ancho',d:'Peso corporal o 145–165 lbs',s:'4×8',tip:'Jalón de crol. El ejercicio de natación más importante.',hx:false},
+    {n:'Bench press',d:'Barra 155–185 lbs',s:'4×8',tip:'Fuerza de empuje para el tirón. Baja 2-3 seg.',hx:false},
+    {n:'Single arm DB row',d:'Mancuerna 62–75 lbs',s:'3×10/lado',tip:'Tirón unilateral del crol. Hombro paralelo al suelo.',hx:false},
+    {n:'Shoulder press mancuernas',d:'Mancuernas 40–48 lbs c/u',s:'3×10',tip:'Deltoides para la entrada de la mano al agua.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Rotadores del hombro. Siempre al final.',hx:false},
+  ]},
+  {t:'⚡ HYROX',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg',d:'Máquina · 4×250m',s:'4×250m',tip:'Tracción coordinada de brazos. Activa lat y core.',hx:true},
+    {n:'Wall balls',d:'18 lbs · objetivo 10ft',s:'3×15',tip:'Triple extensión completa. Lanza desde el pecho.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Dead bug',d:'Piso · control',s:'3×10/lado',tip:'Lento y controlado. Lumbar pegada al piso.',hx:false},
+    {n:'Bird dog',d:'Cuatro puntos',s:'3×10/lado',tip:'Estabilidad lumbar. Cadera paralela al piso, 2 seg de pausa.',hx:false},
+  ]},
+]},
+{date:'Jue Oct 1',tri:'Rodillo escalones · 4x(3+2+1min) @75% · 49 TSS',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'🦵 Pierna Fuerte — Rodillo = pierna fuerte',cls:'il',exs:[
+    {n:'Sentadilla búlgara pesada',d:'Mancuernas 40–48 lbs c/u',s:'4×10/lado',tip:'Fuerza unilateral para el Baja. Rodilla trasera baja controlada.',hx:false},
+    {n:'Leg press una pierna',d:'Máquina 130–175 lbs/lado',s:'4×10/lado',tip:'Potencia unilateral del ciclo de pedaleo.',hx:false},
+    {n:'Leg curl',d:'Máquina 77–99 lbs',s:'3×12',tip:'Isquios para la fase de jalón del pedal.',hx:false},
+    {n:'Step ups explosivos',d:'Step · mancuernas 22 lbs c/u',s:'3×10/lado',tip:'Imita las subidas del Baja.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · +22 lbs',s:'3×15',tip:'3 seg bajando. Progresión de fasciitis.',hx:false},
+  ]},
+  {t:'🏊 Natación técnica',cls:'iu',exs:[
+    {n:'Lat pulldown supino',d:'Máquina 110–132 lbs · palmas arriba',s:'3×10',tip:'Activa el lat en posición de natación.',hx:false},
+    {n:'External rotation TRX',d:'TRX · codo a 90°',s:'3×15/lado',tip:'Prevención lesión hombro. El más subestimado del nadador.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro. Siempre.',hx:false},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×30 seg',tip:'Posición aero. Lumbar pegada al piso.',hx:false},
+    {n:'Pallof press',d:'Cable 25–33 lbs',s:'3×12/lado',tip:'Antirotación para el pedaleo.',hx:false},
+  ]},
+]},
+{date:'Vie Oct 2',tri:'DESCANSO 100%',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'💪 Fuerza Completa — Descanso = gym fuerte',cls:'il',exs:[
+    {n:'Sentadilla con barra',d:'Barra 195–220 lbs · 80%',s:'4×5',tip:'Descanso tri = mejor día para pesos máximos. 1RM estimado ~265-285 lbs.',hx:false},
+    {n:'Peso muerto',d:'Barra 250–275 lbs',s:'4×5',tip:'Cadena posterior completa. 1RM ~330-350 lbs.',hx:false},
+    {n:'Hip thrust con barra',d:'Barra 205–225 lbs',s:'4×12',tip:'El más importante para el Ironman y el Baja.',hx:false},
+    {n:'Leg press bilateral',d:'Máquina 295–345 lbs',s:'3×12',tip:'Pies a la altura de hombros, baja a 90°.',hx:false},
+  ]},
+  {t:'🏊 Natación completo',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22 lbs',s:'4×8',tip:'Jalón de crol. Día libre = más lastre.',hx:false},
+    {n:'Bench press',d:'Barra 165–195 lbs',s:'3×8',tip:'Fuerza de empuje. Equilibra el jalón.',hx:false},
+    {n:'Seated row',d:'Cable 130–155 lbs',s:'3×10',tip:'Espalda media. Codos atrás de las costillas.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre al final.',hx:false},
+  ]},
+  {t:'⚡ HYROX Finisher',cls:'ih',hyrox:true,exs:[
+    {n:'Farmer carry',d:'Mancuernas 77–88 lbs c/u · 100ft',s:'3×100ft',tip:'Objetivo: superar el 100% de tu peso.',hx:true},
+    {n:'Rowing machine',d:'Máquina · esfuerzo máximo',s:'3×250m',tip:'Piernas → espalda → brazos. Tracción potente.',hx:true},
+    {n:'Wall balls',d:'18 lbs · objetivo 10ft',s:'3×15',tip:'Cierra la sesión. Triple extensión completa.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×35 seg',tip:'Lumbar pegada. +5 seg vs días anteriores.',hx:false},
+    {n:'Dead bug',d:'Piso · 4 seg por movimiento',s:'3×10/lado',tip:'Máximo control. Muy lento.',hx:false},
+  ]},
+]},
+{date:'Sáb Oct 3',tri:'Run 5x(3min+6min) · 10.9km · 64 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper + HYROX brazos — DÍA ANTES long run',cls:'iu',exs:[
+    {n:'Pull-up / Lat pulldown',d:'Peso corporal o 145–165 lbs',s:'4×8',tip:'Pre long run de mañana: sin piernas. Upper completo.',hx:false},
+    {n:'Single arm DB row',d:'Mancuerna 62–75 lbs',s:'3×10/lado',tip:'Tirón unilateral del crol.',hx:false},
+    {n:'Shoulder press mancuernas',d:'Mancuernas 40–48 lbs c/u',s:'3×10',tip:'Deltoides para la entrada de la mano al agua.',hx:false},
+    {n:'Tricep pushdown',d:'Cable 55–77 lbs',s:'3×12',tip:'Empuje final de la brazada.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro. Pre long run.',hx:false},
+  ]},
+  {t:'⚡ HYROX de brazos',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg',d:'Máquina · 4×250m',s:'4×250m',tip:'Pre long run: solo brazos. Sin explotar piernas.',hx:true},
+    {n:'Rowing machine',d:'Máquina · ritmo moderado',s:'3×250m',tip:'Piernas lo mínimo. Foco en espalda y brazos.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 25–33 lbs',s:'3×12/lado',tip:'Antirotación. Pre long run.',hx:false},
+    {n:'Bird dog',d:'Cuatro puntos',s:'3×10/lado',tip:'Estabilidad lumbar suave. Pre long run.',hx:false},
+  ]},
+]},
+{date:'Dom Oct 4',tri:'Rodillo 6x(6+6min) @70/50% · 57 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper + Natación — DÍA ANTES long run 17km',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22 lbs',s:'4×8',tip:'Pre long run de mañana: sin piernas. Upper completo.',hx:false},
+    {n:'Bench press',d:'Barra 165–195 lbs',s:'3×8',tip:'Fuerza de empuje. Pre long run.',hx:false},
+    {n:'Seated row',d:'Cable 130–155 lbs',s:'3×10',tip:'Espalda media para la brazada.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro. Pre long run.',hx:false},
+  ]},
+  {t:'⚡ HYROX de brazos',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg',d:'Máquina · 3×250m',s:'3×250m',tip:'Pre long run 17km: solo brazos.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×30 seg',tip:'Posición aero. Pre long run.',hx:false},
+    {n:'Dead bug',d:'Piso · control',s:'3×10/lado',tip:'Lento y controlado.',hx:false},
+  ]},
+]},
+]},
+// ═══════════════════════════════════════════════
+// SEMANA 2: Oct 5 – Oct 11
+// ═══════════════════════════════════════════════
+{label:'Oct 5–11',days:[
+{date:'Lun Oct 5',tri:'🔥 LONG RUN 17km · 102 TSS',badge:'b-light',badgeL:'💧 Upper',secs:[
+  {t:'🏊 Upper ligero — Sin piernas post 17km',cls:'iu',exs:[
+    {n:'Pull-up / Lat pulldown',d:'130–150 lbs · -20 lbs vs habitual',s:'3×8',tip:'Post 17km: peso reducido. Solo mantenimiento de natación.',hx:false},
+    {n:'Single arm DB row',d:'Mancuerna 55–66 lbs',s:'3×10/lado',tip:'Tirón de crol. Post long run: -15 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro. Siempre, incluso post long run.',hx:false},
+  ]},
+  {t:'⚡ HYROX brazos suave',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg suave',d:'Máquina · ritmo cómodo',s:'3×250m',tip:'Post long run: ritmo cómodo, no a tope.',hx:true},
+  ]},
+  {t:'🧘 Core + Movilidad obligatoria',cls:'im',exs:[
+    {n:'Foam roller piernas',d:'15 min · cuádriceps y pantorrillas',s:'1×15 min',tip:'Post 17km obligatorio. 2 min por grupo. Pausa donde duele.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg/lado',tip:'Post long run: los flexores se acortan mucho.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Fasciitis post long run. 3 seg bajando.',hx:false},
+    {n:'Dead bug suave',d:'Piso · muy lento',s:'2×10/lado',tip:'Solo activación del core. Sin carga.',hx:false},
+  ]},
+]},
+{date:'Mar Oct 6',tri:'Rodillo neuromuscular · 4x(5×40s+5min) @85/75% · 65 TSS',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'🦵 Pierna Fuerte — Rodillo = pierna fuerte',cls:'il',exs:[
+    {n:'Sentadilla con barra',d:'Barra 185–225 lbs · +11 lbs',s:'4×6',tip:'Semana 2: sube 11 lbs.',hx:false},
+    {n:'Peso muerto',d:'Barra 255–280 lbs · +11 lbs',s:'4×5',tip:'Semana 2: sube 11 lbs.',hx:false},
+    {n:'Hip thrust',d:'Barra 200–220 lbs · +11 lbs',s:'4×12',tip:'Semana 2: sube 11 lbs.',hx:false},
+    {n:'Leg press bilateral',d:'Máquina 305–352 lbs · +22 lbs',s:'3×12',tip:'Semana 2: sube 22 lbs.',hx:false},
+  ]},
+  {t:'⚡ HYROX',cls:'ih',hyrox:true,exs:[
+    {n:'Sled push',d:'Sled + 100–145 lbs · +11 lbs',s:'4×65ft',tip:'Semana 2: agrega 11 lbs. Inclinación adelante.',hx:true},
+    {n:'Sandbag lunges',d:'Sandbag 44–55 lbs · 20 pasos',s:'3×20 pasos',tip:'Fuerza específica para subidas del Baja.',hx:true},
+    {n:'Wall balls',d:'18 lbs · 15 reps',s:'3×15',tip:'Semana 2: 15 reps ininterrumpidas.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 28–37 lbs · +3 lbs',s:'3×12/lado',tip:'Semana 2: sube 3 lbs.',hx:false},
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×35 seg',tip:'Semana 2: +5 seg.',hx:false},
+  ]},
+]},
+{date:'Mié Oct 7',tri:'Pirámide 10x(1min @100-115%+1min caminando) · 9km · 50 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper + Natación semana 2',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22 lbs',s:'4×8',tip:'Semana 2: agrega 11 lbs si hiciste 8 bien sin lastre.',hx:false},
+    {n:'Bench press',d:'Barra 160–190 lbs · +5 lbs',s:'4×8',tip:'Semana 2: sube 5 lbs.',hx:false},
+    {n:'Seated row',d:'Cable 125–150 lbs · +5 lbs',s:'3×10',tip:'Semana 2: sube 5 lbs.',hx:false},
+    {n:'Shoulder press',d:'Mancuernas 42–50 lbs c/u',s:'3×10',tip:'Semana 2: sube 2 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Rutina fija. Siempre.',hx:false},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Dead bug',d:'Piso · 3 seg por movimiento',s:'3×10/lado',tip:'Semana 2: 3 seg por movimiento.',hx:false},
+    {n:'Bird dog',d:'Cuatro puntos · 2 seg pausa',s:'3×10/lado',tip:'Semana 2: 2 seg de pausa.',hx:false},
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×35 seg',tip:'Semana 2: +5 seg.',hx:false},
+  ]},
+]},
+{date:'Jue Oct 8',tri:'Rodillo 6x1min+5x2min+4x3min @75% · 57 TSS',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'🦵 Pierna Fuerte — Rodillo = pierna fuerte',cls:'il',exs:[
+    {n:'Sentadilla búlgara',d:'Mancuernas 40–48 lbs c/u · +4 lbs',s:'4×10/lado',tip:'Semana 2: sube 4 lbs.',hx:false},
+    {n:'Leg press una pierna',d:'Máquina 145–185 lbs/lado · +11 lbs',s:'4×10/lado',tip:'Semana 2: sube 11 lbs.',hx:false},
+    {n:'Peso muerto rumano',d:'Barra 165–185 lbs · +11 lbs',s:'3×10',tip:'Semana 2: sube 11 lbs.',hx:false},
+    {n:'Leg curl',d:'Máquina 84–99 lbs · +5 lbs',s:'3×12',tip:'Semana 2: sube 5 lbs.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · +22–33 lbs',s:'3×15',tip:'Fasciitis semana 2: agrega peso si no duele.',hx:false},
+  ]},
+  {t:'🏊 Natación',cls:'iu',exs:[
+    {n:'Lat pulldown supino',d:'Máquina 115–140 lbs · +5 lbs',s:'3×10',tip:'Semana 2: sube 5 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro. Siempre.',hx:false},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 28–37 lbs · +3 lbs',s:'3×12/lado',tip:'Semana 2: sube 3 lbs.',hx:false},
+    {n:'TRX plank con tuck',d:'TRX · pies en correas',s:'3×12 tucks',tip:'Semana 2: +2 reps.',hx:false},
+  ]},
+]},
+{date:'Vie Oct 9',tri:'Run subidas · 4x7min · 8.5km · 44 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper + HYROX brazos — DÍA ANTES series 3x3K',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22 lbs',s:'4×8',tip:'Mañana son 3x3K: sin piernas hoy.',hx:false},
+    {n:'Bench press',d:'Barra 160–190 lbs',s:'3×8',tip:'Fuerza de empuje de natación.',hx:false},
+    {n:'Seated row',d:'Cable 125–150 lbs',s:'3×10',tip:'Espalda media para la brazada.',hx:false},
+    {n:'Hammer curl',d:'Mancuernas 35–44 lbs c/u',s:'3×12',tip:'Fuerza del antebrazo en agua.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro.',hx:false},
+  ]},
+  {t:'⚡ HYROX de brazos',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg',d:'Máquina · 4×250m',s:'4×250m',tip:'Solo brazos. Pre 3x3K.',hx:true},
+    {n:'Rowing machine',d:'Máquina · 3×250m',s:'3×250m',tip:'Foco en espalda y brazos.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Dead bug',d:'Piso · 3 seg',s:'3×10/lado',tip:'Sin cargar piernas. Pre series.',hx:false},
+  ]},
+]},
+{date:'Sáb Oct 10',tri:'3x3K progresivos @80-110% · 9.5km · 59 TSS',badge:'b-light',badgeL:'💧 Suave',secs:[
+  {t:'🏊 Upper suave + Movilidad — Post series fuertes',cls:'iu',exs:[
+    {n:'TRX row suave',d:'TRX · inclinación alta · fácil',s:'3×12',tip:'Post 3x3K: solo mantenimiento. No fuerces.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro. Incluso en días suaves.',hx:false},
+  ]},
+  {t:'🧘 Movilidad y recuperación',cls:'im',exs:[
+    {n:'Foam roller piernas',d:'15 min · pantorrillas y cuádriceps',s:'1×15 min',tip:'Post 3x3K. Foco en pantorrilla.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg',tip:'Las series rápidas acortan los flexores.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'3×15',tip:'Rutina de fasciitis. 3 seg bajando.',hx:false},
+    {n:'Botella fría en arco',d:'5 min por pie',s:'1×5 min',tip:'Masaje de fasciitis. Presión moderada rodando el arco.',hx:false},
+  ]},
+]},
+{date:'Dom Oct 11',tri:'Rodillo aeróbico · 4x(5+5+5min) @70/60/50% · 50 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper + HYROX — DÍA ANTES long run 20km',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22–33 lbs',s:'4×8',tip:'Pre long run 20km de mañana: sin piernas. Upper completo.',hx:false},
+    {n:'Bench press',d:'Barra 170–200 lbs · +5 lbs',s:'3×8',tip:'Pre long run. Semana 2.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Nunca lo saltes.',hx:false},
+    {n:'Seated row',d:'Cable 130–155 lbs',s:'3×10',tip:'Espalda media para la brazada.',hx:false},
+  ]},
+  {t:'⚡ HYROX de brazos',cls:'ih',hyrox:true,exs:[
+    {n:'Rowing machine',d:'Máquina · 3×500m',s:'3×500m',tip:'Pre long run 20km: solo brazos y espalda.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×35 seg',tip:'Pre long run. Posición aero.',hx:false},
+    {n:'Dead bug',d:'Piso · control',s:'3×10/lado',tip:'Lento y controlado.',hx:false},
+  ]},
+]},
+]},
+// ═══════════════════════════════════════════════
+// SEMANA 3: Oct 12 – Oct 18
+// ═══════════════════════════════════════════════
+{label:'Oct 12–18',days:[
+{date:'Lun Oct 12',tri:'🔥🔥 LONG RUN 20km · 117 TSS',badge:'b-light',badgeL:'💧 Upper',secs:[
+  {t:'🏊 Upper ligero — Sin piernas post 20km',cls:'iu',exs:[
+    {n:'Pull-up / Lat pulldown',d:'130–150 lbs · -20 lbs',s:'3×8',tip:'Post 20km: peso reducido, menos series.',hx:false},
+    {n:'Single arm DB row',d:'Mancuerna 55–66 lbs · -15 lbs',s:'3×10/lado',tip:'Post long run: -15 lbs del peso habitual.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre. Incluso post 20km.',hx:false},
+  ]},
+  {t:'🧘 Movilidad obligatoria post 20km',cls:'im',exs:[
+    {n:'Foam roller completo',d:'20 min · todo el cuerpo',s:'1×20 min',tip:'Post 20km: 20 min de foam roller obligatorio.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 2 min por lado',s:'2×2 min/lado',tip:'2 min por lado después de 20km.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Post 20km: 4 seg bajando.',hx:false},
+    {n:'Dead bug suave',d:'Piso · muy lento',s:'2×10/lado',tip:'Solo activación. Sin carga.',hx:false},
+  ]},
+]},
+{date:'Mar Oct 13',tri:'Rodillo pirámide · 6x30s+3x(10+8+6+4min) @75-88% · 51 TSS',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'🦵 Pierna Fuerte — Rodillo = pierna fuerte',cls:'il',exs:[
+    {n:'Sentadilla con barra',d:'Barra 200–230 lbs · +11 lbs',s:'4×6',tip:'Semana 3: sube 11 lbs.',hx:false},
+    {n:'Peso muerto',d:'Barra 265–290 lbs · +11 lbs',s:'4×5',tip:'Semana 3: sube 11 lbs.',hx:false},
+    {n:'Sentadilla búlgara',d:'Mancuernas 44–53 lbs c/u · +4 lbs',s:'4×10/lado',tip:'Semana 3: sube 4 lbs.',hx:false},
+    {n:'Hip thrust',d:'Barra 215–235 lbs · +11 lbs',s:'4×12',tip:'Semana 3: sube 11 lbs.',hx:false},
+  ]},
+  {t:'⚡ HYROX',cls:'ih',hyrox:true,exs:[
+    {n:'Sled push',d:'Sled + 110–155 lbs · +11 lbs',s:'4×65ft',tip:'Semana 3: sube 11 lbs.',hx:true},
+    {n:'Sandbag lunges',d:'Sandbag 55–66 lbs · 25 pasos',s:'3×25 pasos',tip:'Semana 3: sube 11 lbs y 25 pasos.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 30–40 lbs · +3 lbs',s:'3×12/lado',tip:'Semana 3: sube 3 lbs.',hx:false},
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×40 seg',tip:'Semana 3: +5 seg.',hx:false},
+  ]},
+]},
+{date:'Mié Oct 14',tri:'12x(300m @90-94%+100m @98-100%+1min) · 10.7km · 58 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Tren superior semana 3',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22–33 lbs · +11 lbs',s:'4×8',tip:'Semana 3: agrega 11 lbs.',hx:false},
+    {n:'Bench press',d:'Barra 165–195 lbs · +5 lbs',s:'4×8',tip:'Semana 3: sube 5 lbs.',hx:false},
+    {n:'Single arm DB row',d:'Mancuerna 70–82 lbs · +8 lbs',s:'3×10/lado',tip:'Semana 3: sube 8 lbs.',hx:false},
+    {n:'Shoulder press',d:'Mancuernas 46–53 lbs c/u · +4 lbs',s:'3×10',tip:'Semana 3: sube 4 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Nunca lo saltes.',hx:false},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Dead bug',d:'Piso · 4 seg por movimiento',s:'3×10/lado',tip:'Semana 3: 4 seg. Máximo control.',hx:false},
+    {n:'TRX plank con tuck',d:'TRX · pies en correas',s:'3×12 tucks',tip:'Semana 3: +2 reps.',hx:false},
+    {n:'Bird dog',d:'Cuatro puntos · 2 seg pausa',s:'3×10/lado',tip:'Semana 3: 2 seg de pausa.',hx:false},
+  ]},
+]},
+{date:'Jue Oct 15',tri:'4x(10min @80-85%+5min @60%) · 13.6km · 79 TSS',badge:'b-mod',badgeL:'💪 Pierna mod',secs:[
+  {t:'🦵 Pierna Moderada + Natación',cls:'il',exs:[
+    {n:'Hip thrust',d:'Barra 195–215 lbs · moderado',s:'4×12',tip:'Run 4x10min: pierna moderada. Hip thrust = menor impacto.',hx:false},
+    {n:'Leg press bilateral',d:'Máquina 285–330 lbs',s:'3×12',tip:'Moderado. Mañana es rodillo y luego hay long run.',hx:false},
+    {n:'Leg curl',d:'Máquina 84–99 lbs',s:'3×12',tip:'Isquios. Moderado hoy.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · +22–33 lbs',s:'3×15',tip:'Fasciitis semana 3. 3 seg bajando.',hx:false},
+  ]},
+  {t:'🏊 Natación',cls:'iu',exs:[
+    {n:'Lat pulldown cerrado',d:'Máquina 125–150 lbs · +5 lbs',s:'3×12',tip:'Semana 3: sube 5 lbs.',hx:false},
+    {n:'Cable row',d:'Polea 125–150 lbs · +5 lbs',s:'3×12',tip:'Semana 3: sube 5 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre al final.',hx:false},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×40 seg',tip:'Semana 3: 40 seg.',hx:false},
+    {n:'Dead bug',d:'Piso · 4 seg',s:'3×10/lado',tip:'4 seg por movimiento.',hx:false},
+  ]},
+]},
+{date:'Vie Oct 16',tri:'Rodillo 3x(8x1min @88%+1min @55%) · 62 TSS',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'🦵 Pierna Fuerte — Rodillo = pierna fuerte',cls:'il',exs:[
+    {n:'Sentadilla búlgara pesada',d:'Mancuernas 46–55 lbs c/u · +4 lbs',s:'4×10/lado',tip:'Semana 3: sube 4 lbs.',hx:false},
+    {n:'Leg press una pierna',d:'Máquina 155–195 lbs/lado · +11 lbs',s:'4×10/lado',tip:'Semana 3: sube 11 lbs.',hx:false},
+    {n:'Peso muerto rumano',d:'Barra 175–195 lbs · +11 lbs',s:'3×10',tip:'Semana 3: sube 11 lbs.',hx:false},
+    {n:'Step ups explosivos',d:'Step · mancuernas 26 lbs c/u',s:'3×10/lado',tip:'Semana 3: sube 4 lbs.',hx:false},
+  ]},
+  {t:'⚡ HYROX',cls:'ih',hyrox:true,exs:[
+    {n:'Farmer carry',d:'Mancuernas 80–93 lbs c/u · 100ft',s:'4×100ft',tip:'Semana 3: sube 5-7 lbs.',hx:true},
+    {n:'Burpee broad jump',d:'Sin peso · 10 reps',s:'3×10',tip:'Semana 3: 10 reps. Aterriza suave.',hx:true},
+  ]},
+  {t:'🏊 Natación',cls:'iu',exs:[
+    {n:'Pull-up',d:'Peso corporal + 33 lbs · peso máximo',s:'4×8',tip:'Semana 3: peso máximo del mes.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre.',hx:false},
+  ]},
+]},
+{date:'Sáb Oct 17',tri:'Run con sentadillas · 2x(200m+squats+lunges) · 7km · 39 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper — DÍA ANTES brick',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22–33 lbs',s:'4×8',tip:'Mañana es brick bici+run. Solo tren superior hoy.',hx:false},
+    {n:'Bench press',d:'Barra 165–195 lbs',s:'3×8',tip:'Fuerza de empuje. Pre brick.',hx:false},
+    {n:'Seated row',d:'Cable 130–155 lbs',s:'3×10',tip:'Espalda media. Pre brick.',hx:false},
+    {n:'Shoulder press',d:'Mancuernas 44–53 lbs c/u',s:'3×10',tip:'Deltoides para natación.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro. Pre brick.',hx:false},
+  ]},
+  {t:'⚡ HYROX de brazos',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg',d:'Máquina · 3×250m',s:'3×250m',tip:'Solo brazos. Pre brick de mañana.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×40 seg',tip:'Posición aero para el brick.',hx:false},
+    {n:'Pallof press',d:'Cable 30–40 lbs',s:'3×12/lado',tip:'Antirotación. Pre brick.',hx:false},
+  ]},
+]},
+{date:'Dom Oct 18',tri:'🧱 BRICK · Rodillo 1:45h + Run 3km · ~90 TSS',badge:'b-light',badgeL:'💧 Movilidad',secs:[
+  {t:'🧘 Solo Movilidad — Post Brick',cls:'im',exs:[
+    {n:'Foam roller piernas',d:'15 min · cuádriceps y pantorrillas',s:'1×15 min',tip:'Post brick: el cuádricep es lo que más sufre. Foam roller obligatorio.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg',tip:'La posición aero en bici acorta los flexores.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Fasciitis post brick. Rutina diaria.',hx:false},
+    {n:'TRX row muy suave',d:'TRX · inclinación alta · muy fácil',s:'2×10',tip:'Solo para no perder el patrón de natación.',hx:false},
+    {n:'Botella fría en arco',d:'5 min por pie',s:'1×5 min',tip:'Masaje de fasciitis post brick.',hx:false},
+  ]},
+]},
+]},
+// ═══════════════════════════════════════════════
+// SEMANA 4: Oct 19 – Oct 25
+// ═══════════════════════════════════════════════
+{label:'Oct 19–25',days:[
+{date:'Lun Oct 19',tri:'🔥🔥🔥 LONG RUN 23km · 141 TSS',badge:'b-light',badgeL:'💧 Upper',secs:[
+  {t:'🏊 Upper muy suave — Sin piernas post 23km',cls:'iu',exs:[
+    {n:'TRX row',d:'TRX · inclinación alta · suave',s:'3×12',tip:'Post 23km: solo TRX. Sin barra ni máquina pesada.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre. Post 23km.',hx:false},
+    {n:'Hammer curl',d:'Mancuernas 28–33 lbs c/u',s:'2×12',tip:'Post 23km: muy ligero. Solo mantenimiento.',hx:false},
+  ]},
+  {t:'🧘 Movilidad obligatoria 23km',cls:'im',exs:[
+    {n:'Foam roller completo',d:'25 min · todo el cuerpo',s:'1×25 min',tip:'23km = 25 min de foam roller. Empieza por los pies.',hx:false},
+    {n:'Hip flexor stretch largo',d:'Piso · 2 min por lado',s:'3×2 min/lado',tip:'3 series de 2 min por lado.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal · 4 seg',s:'2×10',tip:'Post 23km: 4 seg bajando.',hx:false},
+    {n:'Botas de compresión',d:'MODE: LEG · HEAT: HIGH · 45 min',s:'1×45 min',tip:'Post 23km las botas son obligatorias.',hx:false},
+  ]},
+]},
+{date:'Mar Oct 20',tri:'Rodillo · 4x(3×40s+4min) @85/75% · 57 TSS',badge:'b-hard',badgeL:'🔥 Fuerte',secs:[
+  {t:'🦵 Pierna Fuerte semana 4 — Rodillo = pierna fuerte',cls:'il',exs:[
+    {n:'Sentadilla con barra',d:'Barra 210–235 lbs · +11 lbs',s:'4×6',tip:'Semana 4: sube 11 lbs.',hx:false},
+    {n:'Peso muerto',d:'Barra 270–300 lbs · +11 lbs',s:'4×5',tip:'Semana 4: sube 11 lbs.',hx:false},
+    {n:'Hip thrust',d:'Barra 220–242 lbs · +11 lbs',s:'4×12',tip:'Semana 4: sube 11 lbs.',hx:false},
+    {n:'Leg press bilateral',d:'Máquina 330–385 lbs · +22 lbs',s:'3×12',tip:'Semana 4: sube 22 lbs.',hx:false},
+  ]},
+  {t:'⚡ HYROX',cls:'ih',hyrox:true,exs:[
+    {n:'Farmer carry',d:'Mancuernas 82–95 lbs c/u · 100ft',s:'3×100ft',tip:'Semana 4: peso máximo del mes.',hx:true},
+    {n:'Rowing machine',d:'Máquina · 3×500m',s:'3×500m',tip:'Semana 4: 500m a tope.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 33–44 lbs · peso máximo',s:'3×12/lado',tip:'Semana 4: peso máximo del mes.',hx:false},
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'3×45 seg',tip:'Semana 4: 45 seg. Máximo del mes.',hx:false},
+  ]},
+]},
+{date:'Mié Oct 21',tri:'Subidas · 5×6min · 9.1km · 45 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper semana 4 + HYROX',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 33 lbs · máximo',s:'4×8',tip:'Semana 4: peso máximo del mes.',hx:false},
+    {n:'Single arm DB row',d:'Mancuerna 75–88 lbs · máximo',s:'3×10/lado',tip:'Semana 4: peso máximo.',hx:false},
+    {n:'Shoulder press',d:'Mancuernas 48–55 lbs c/u',s:'3×10',tip:'Semana 4: sube 2 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Salud del hombro.',hx:false},
+  ]},
+  {t:'⚡ HYROX de brazos',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg',d:'Máquina · 4×250m · tiempo máximo',s:'4×250m',tip:'Semana 4: intenta bajar tu tiempo.',hx:true},
+    {n:'Burpee broad jump',d:'Sin peso · 10 reps',s:'3×10',tip:'Explosividad máxima.',hx:true},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 33–44 lbs',s:'3×12/lado',tip:'Semana 4: peso máximo.',hx:false},
+    {n:'Dead bug',d:'Piso · 4 seg por movimiento',s:'3×10/lado',tip:'Máximo control.',hx:false},
+  ]},
+]},
+{date:'Jue Oct 22',tri:'3-2-1 · 3k+2k+1k tempo @80-90% · 10km · 59 TSS',badge:'b-mod',badgeL:'💪 Pierna mod',secs:[
+  {t:'🦵 Pierna Moderada + Upper',cls:'il',exs:[
+    {n:'Hip thrust',d:'Barra 215–235 lbs',s:'3×12',tip:'Mañana es descanso: moderado hoy está bien.',hx:false},
+    {n:'Leg press bilateral',d:'Máquina 305–352 lbs',s:'3×10',tip:'Moderado. Mañana descansas.',hx:false},
+    {n:'Sentadilla búlgara',d:'Mancuernas 44–53 lbs c/u',s:'3×8/lado',tip:'Fuerza unilateral. Moderado hoy.',hx:false},
+  ]},
+  {t:'🏊 Upper + Natación',cls:'iu',exs:[
+    {n:'Pull-up / Lat pulldown',d:'Peso corporal o 155–175 lbs',s:'4×8',tip:'Upper completo hoy. Semana 4.',hx:false},
+    {n:'Bench press',d:'Barra 170–200 lbs',s:'3×8',tip:'Semana 4.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre.',hx:false},
+  ]},
+  {t:'⚡ HYROX Finisher',cls:'ih',hyrox:true,exs:[
+    {n:'Rowing machine',d:'Máquina · 3×500m',s:'3×500m',tip:'Último rowing pesado antes del taper.',hx:true},
+    {n:'Farmer carry',d:'Mancuernas 80–93 lbs c/u · 100ft',s:'3×100ft',tip:'Último farmer carry pesado antes del Baja.',hx:true},
+  ]},
+]},
+{date:'Vie Oct 23',tri:'DESCANSO',badge:'b-mod',badgeL:'💪 Fuerza mod',secs:[
+  {t:'💪 Fuerza moderada — inicio taper Baja',cls:'il',exs:[
+    {n:'Sentadilla con barra',d:'Barra 195–215 lbs · taper -10%',s:'3×6',tip:'Inicio de taper: -10% del peso y menos series.',hx:false},
+    {n:'Peso muerto',d:'Barra 245–270 lbs · taper -10%',s:'3×5',tip:'Taper: -10%.',hx:false},
+    {n:'Hip thrust',d:'Barra 200–220 lbs · taper',s:'3×12',tip:'Taper: glúteo activo para el Baja.',hx:false},
+  ]},
+  {t:'🏊 Natación completo',cls:'iu',exs:[
+    {n:'Pull-up + lastre',d:'Peso corporal + 22 lbs · -11 lbs',s:'3×8',tip:'Taper: baja 11 lbs de lastre.',hx:false},
+    {n:'Bench press',d:'Barra 160–185 lbs · -10 lbs',s:'3×8',tip:'Taper: -10 lbs.',hx:false},
+    {n:'Seated row',d:'Cable 125–148 lbs · -10 lbs',s:'3×10',tip:'Taper: -10 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre.',hx:false},
+  ]},
+  {t:'🔥 Core suave',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 28–37 lbs · -7 lbs',s:'2×12/lado',tip:'Taper: -7 lbs, menos series.',hx:false},
+    {n:'Dead bug',d:'Piso · control',s:'2×10/lado',tip:'Taper: menos series.',hx:false},
+    {n:'Foam roller y movilidad',d:'15 min',s:'1×15 min',tip:'Descanso tri: aprovecha para recuperar.',hx:false},
+  ]},
+]},
+{date:'Sáb Oct 24',tri:'Caminadora inclinación · 3x(4×1min @5%+1min flat) · 8km · 44 TSS',badge:'b-mod',badgeL:'💪 Upper taper',secs:[
+  {t:'🏊 Upper taper natación',cls:'iu',exs:[
+    {n:'Pull-up',d:'Peso corporal · sin lastre',s:'3×8',tip:'Taper del Baja: sin lastre. Mantenimiento.',hx:false},
+    {n:'Lat pulldown cerrado',d:'Máquina 115–135 lbs · -10 lbs',s:'3×12',tip:'Taper: -10 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre.',hx:false},
+    {n:'Hammer curl',d:'Mancuernas 30–37 lbs c/u',s:'2×12',tip:'Taper: menos series.',hx:false},
+  ]},
+  {t:'🦵 Pierna suave',cls:'il',exs:[
+    {n:'Hip thrust',d:'Barra 185–205 lbs · taper -10%',s:'3×12',tip:'Taper del Baja: -10% del peso.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'3×12',tip:'Fasciitis: semana pre-Baja. Rutina diaria.',hx:false},
+  ]},
+  {t:'🔥 Core',cls:'ic',exs:[
+    {n:'Dead bug',d:'Piso · 2 seg por movimiento',s:'2×10/lado',tip:'Taper: menos series.',hx:false},
+    {n:'Bird dog',d:'Cuatro puntos',s:'2×10/lado',tip:'Estabilidad lumbar suave. Pre-Baja.',hx:false},
+  ]},
+]},
+{date:'Dom Oct 25',tri:'Rodillo · 5x(5+5+5min) @75/65/50% · 66 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper + HYROX — DÍA ANTES long run 25km',cls:'iu',exs:[
+    {n:'Pull-up',d:'Peso corporal · sin lastre · pre long run',s:'3×8',tip:'Pre long run 25km de mañana: sin piernas.',hx:false},
+    {n:'Bench press',d:'Barra 155–175 lbs · taper',s:'3×8',tip:'Pre long run. Sin explotar piernas.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Nunca lo saltes.',hx:false},
+  ]},
+  {t:'⚡ HYROX de brazos',cls:'ih',hyrox:true,exs:[
+    {n:'Ski erg',d:'Máquina · 3×250m · moderado',s:'3×250m',tip:'Pre long run 25km: solo brazos, ritmo moderado.',hx:true},
+  ]},
+  {t:'🔥 Core suave',cls:'ic',exs:[
+    {n:'Pallof press',d:'Cable 26–33 lbs · taper',s:'2×12/lado',tip:'Taper: menos series.',hx:false},
+    {n:'TRX hollow body',d:'TRX · pies en correas',s:'2×40 seg',tip:'Taper: menos series.',hx:false},
+  ]},
+]},
+]},
+// ═══════════════════════════════════════════════
+// SEMANA 5: Oct 26 – Nov 1
+// ═══════════════════════════════════════════════
+{label:'Oct 26–Nov 1',days:[
+{date:'Lun Oct 26',tri:'🔥🔥🔥 LONG RUN 25km · 152 TSS — El más largo',badge:'b-light',badgeL:'💧 Movilidad',secs:[
+  {t:'🏊 Upper mínimo — Post 25km',cls:'iu',exs:[
+    {n:'TRX row suave',d:'TRX · inclinación alta · muy fácil',s:'2×10',tip:'Post 25km: solo TRX. Sin carga real. Solo no perder el patrón.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'2×15',tip:'Siempre. Post 25km.',hx:false},
+  ]},
+  {t:'🧘 Movilidad obligatoria 25km — LA MÁS IMPORTANTE',cls:'im',exs:[
+    {n:'Foam roller completo',d:'30 min · empieza por los pies',s:'1×30 min',tip:'25km = el long run más largo. 30 min de foam roller. 3 min por grupo.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 3 min por lado · 3 series',s:'3×3 min/lado',tip:'3 series de 3 min por lado. El más largo = el estiramiento más largo.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal · 4 seg bajada',s:'2×10',tip:'Post 25km: 4 seg bajando. Sin peso.',hx:false},
+    {n:'Botas de compresión',d:'MODE: LEG · HEAT: HIGH · 45 min',s:'1×45 min',tip:'Post 25km: obligatorio. HIGH heat, MID-MAX intensity.',hx:false},
+  ]},
+]},
+{date:'Mar Oct 27',tri:'Rodillo pirámide dec. · 12+10+8+6+4+2min @75% · 59 TSS',badge:'b-mod',badgeL:'💪 Upper',secs:[
+  {t:'🏊 Upper + Natación — pre Baja',cls:'iu',exs:[
+    {n:'Pull-up',d:'Peso corporal · sin lastre · pre Baja',s:'3×8',tip:'Semana pre-Baja: sin lastre. Mantenimiento.',hx:false},
+    {n:'Seated row',d:'Cable 125–145 lbs · -10 lbs',s:'3×10',tip:'Pre Baja: -10 lbs.',hx:false},
+    {n:'Shoulder press',d:'Mancuernas 42–50 lbs c/u · -4 lbs',s:'3×10',tip:'Pre Baja: -4 lbs.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'3×15',tip:'Siempre.',hx:false},
+  ]},
+  {t:'🔥 Core suave',cls:'ic',exs:[
+    {n:'Dead bug',d:'Piso · control',s:'2×10/lado',tip:'Pre Baja: menos series.',hx:false},
+    {n:'Bird dog',d:'Cuatro puntos',s:'2×10/lado',tip:'Estabilidad lumbar ligera. Pre Baja.',hx:false},
+  ]},
+]},
+{date:'Mié Oct 28',tri:'14x(600m @90-94%+200m @98%+90s) · 17.6km · 99 TSS',badge:'b-light',badgeL:'💧 Movilidad',secs:[
+  {t:'🧘 Solo Movilidad — 14 series son mucha carga',cls:'im',exs:[
+    {n:'Foam roller piernas',d:'15 min · pantorrillas y cuádriceps',s:'1×15 min',tip:'14 series de 800m. Foam roller obligatorio. Foco en pantorrilla.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg',tip:'Las series rápidas acortan los flexores.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Fasciitis: mantén la rutina aunque vengas cansado.',hx:false},
+    {n:'TRX row muy suave',d:'TRX · inclinación alta · muy fácil',s:'2×10',tip:'Solo mantenimiento del patrón de natación.',hx:false},
+  ]},
+]},
+{date:'Jue Oct 29',tri:'Rodillo · 3x(6×2min @88%+1min @55%) · 77 TSS',badge:'b-light',badgeL:'💧 Upper taper',secs:[
+  {t:'🏊 Upper taper final — pre Baja',cls:'iu',exs:[
+    {n:'TRX row',d:'TRX · inclinación alta · suave',s:'2×12',tip:'Última semana pre-Baja: solo TRX.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'2×15',tip:'Salud del hombro. Pre Baja.',hx:false},
+    {n:'Hammer curl',d:'Mancuernas 26–33 lbs c/u',s:'2×12',tip:'Pre Baja: muy ligero.',hx:false},
+  ]},
+  {t:'🧘 Core + Movilidad',cls:'ic',exs:[
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg',tip:'Pre Baja: caderas libres.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Fasciitis pre-Baja. Rutina diaria.',hx:false},
+    {n:'Foam roller piernas',d:'10 min',s:'1×10 min',tip:'Pre Baja: 10 min para llegar fresco.',hx:false},
+  ]},
+]},
+{date:'Vie Oct 30',tri:'Run suave con sentadillas · 7km · 39 TSS',badge:'b-light',badgeL:'💧 Taper',secs:[
+  {t:'🏊 Upper mínimo — taper final',cls:'iu',exs:[
+    {n:'Pull-up',d:'Peso corporal · sin lastre',s:'2×8',tip:'Taper final: 2 series, sin lastre. Solo mantener el patrón.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'2×15',tip:'Siempre.',hx:false},
+  ]},
+  {t:'🧘 Movilidad y fasciitis',cls:'im',exs:[
+    {n:'Foam roller completo',d:'15 min',s:'1×15 min',tip:'Piernas y fascia plantar. Pre Baja.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg',tip:'Pre Baja: caderas libres.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Fasciitis: última semana pre-Baja.',hx:false},
+    {n:'Botella fría en arco',d:'5 min por pie',s:'1×5 min',tip:'Masaje de fasciitis. El más importante de la semana.',hx:false},
+  ]},
+]},
+{date:'Sáb Oct 31',tri:'Easy run 40min · 7.1km · 40 TSS · Baja en 2 semanas',badge:'b-light',badgeL:'💧 Movilidad',secs:[
+  {t:'🧘 Movilidad final pre Baja',cls:'im',exs:[
+    {n:'Foam roller completo',d:'20 min · todo el cuerpo',s:'1×20 min',tip:'Última sesión gym del mes. Baja en 2 semanas.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg',tip:'Caderas libres para el Baja.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Fasciitis: última sesión antes del Baja.',hx:false},
+    {n:'Botella fría en arco',d:'5 min por pie',s:'1×5 min',tip:'Masaje de fasciitis.',hx:false},
+    {n:'Botas de compresión',d:'MODE: RELAX · 30 min',s:'1×30 min',tip:'Modo relax antes de dormir. Última preparación para el Baja.',hx:false},
+  ]},
+]},
+{date:'Dom Nov 1',tri:'🧱 Rodillo 1:45h + Run 3km · Brick · 100 TSS',badge:'b-light',badgeL:'💧 Upper suave',secs:[
+  {t:'🏊 Upper muy suave — Post brick pre Baja',cls:'iu',exs:[
+    {n:'TRX row suave',d:'TRX · inclinación alta',s:'2×12',tip:'Post brick y pre Baja: muy suave. Solo mantenimiento.',hx:false},
+    {n:'TRX face pull',d:'TRX · agarre neutro · alto',s:'2×15',tip:'Siempre. Última sesión antes del Baja.',hx:false},
+  ]},
+  {t:'🧘 Movilidad post brick',cls:'im',exs:[
+    {n:'Foam roller piernas',d:'15 min · cuádriceps y pantorrillas',s:'1×15 min',tip:'Post brick. Baja en 13 días.',hx:false},
+    {n:'Hip flexor stretch',d:'Piso · 90 seg por lado',s:'2×90 seg',tip:'Post posición aero en bici.',hx:false},
+    {n:'Calf raise excéntrico',d:'Escalón · peso corporal',s:'2×12',tip:'Fasciitis: última semana pre-Baja.',hx:false},
+  ]},
+]},
+]},
+];
+
+// ── BUILD UI ───────────────────────────────────────────────────────────────
+const tabs = document.getElementById('wtabs');
+const weeks = document.getElementById('weeks');
+
+W.forEach((wk, wi) => {
+  // Tab
+  const tab = document.createElement('div');
+  tab.className = 'wtab' + (wi === 0 ? ' on' : '');
+  tab.textContent = wk.label;
+  tab.onclick = () => {
+    document.querySelectorAll('.wtab').forEach(t => t.classList.remove('on'));
+    document.querySelectorAll('.week').forEach(w => w.classList.remove('on'));
+    tab.classList.add('on');
+    document.getElementById('week-'+wi).classList.add('on');
+  };
+  tabs.appendChild(tab);
+
+  // Week div
+  const wdiv = document.createElement('div');
+  wdiv.className = 'week' + (wi === 0 ? ' on' : '');
+  wdiv.id = 'week-' + wi;
+
+  wk.days.forEach(day => {
+    let html = `<div class="day">
+      <div class="day-head">
+        <div class="day-left">
+          <div class="day-date">${day.date}</div>
+          <div class="day-tri">${day.tri}</div>
+        </div>
+        <div class="day-badge ${day.badge}">${day.badgeL}</div>
+      </div>`;
+
+    day.secs.forEach(sec => {
+      const hasHx = sec.exs.some(e => e.hx);
+      html += `<div class="sec">
+        <div class="sec-title">${sec.t}${hasHx ? ' <span class="hx-tag">HYROX</span>' : ''}</div>`;
+      sec.exs.forEach(ex => {
+        html += `<div class="ex${ex.hx ? ' hx' : ''}">
+          <div class="ex-ico ${sec.cls}">${sec.t.split(' ')[0]}</div>
+          <div class="ex-info">
+            <div class="ex-name">${ex.n}</div>
+            <div class="ex-det">${ex.d}</div>
+            <div class="ex-tip">💡 ${ex.tip}</div>
+          </div>
+          <div class="ex-sets">${ex.s}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    });
+
+    html += `</div>`;
+    wdiv.innerHTML += html;
+  });
+
+  weeks.appendChild(wdiv);
+});
+
+// Auto-select current week
+const start = new Date(2026,8,27);
+const diff = Math.floor((new Date()-start)/86400000);
+const wi = Math.max(0, Math.min(Math.floor(diff/7), W.length-1));
+document.querySelectorAll('.wtab')[wi]?.click();
+</script>
+</body>
+</html>
